@@ -110,7 +110,7 @@ echo "   ✓ Web Server"
 echo "   ✓ MR Panel"
 echo "   ✓ Firewall"
 echo ""
-echo -e " ${KUNING}☕ Silakan ngopi dulu, biar kami yang bekerja.${NC}"
+echo -e " ${KUNING}☕🚬 Silakan ngopi dulu, biar kami yang bekerja.${NC}"
 echo ""
 
 while true

@@ -73,8 +73,9 @@ sukses "WebServer dihapus"
 
 
 # MariaDB
-proses "Menghapus Database Server..."
+proses "Menghapus Database Server (kopi dulu ☕🚬)..."
 
+DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a \
 apt purge -y mariadb-server mariadb-client >> "$LOG_FILE" 2>&1 || true
 
 rm -rf /var/lib/mysql
