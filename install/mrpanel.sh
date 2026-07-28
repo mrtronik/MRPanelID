@@ -25,6 +25,14 @@ proses "Menginstall Library yang dibutuhkan..."
 npm install --production >> "$LOG_FILE" 2>&1
 sukses "Library telah Aktif"
 
+# ─── Hapus Konfigurasi Lama ───────────────────
+if [ -f .env ]; then
+    proses "Menghapus Konfigurasi Lama..."
+    rm -f .env
+    sukses "Konfigurasi Lama Dihapus"
+fi
+
+
 # Create .env
 if [ ! -f .env ]; then
     proses "Membuat Konfigurasi..."
@@ -45,7 +53,7 @@ DB_USER=root
 DB_PASSWORD=${DB_PASSWORD}
 DB_DATABASE=belajar_node
 SMTP_HOST=localhost
-SMTP_PORT=587
+SMTP_PORT=25
 SMTP_USER=
 SMTP_PASS=
 SMTP_SECURE=false
