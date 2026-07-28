@@ -10,7 +10,7 @@ fi
 
 rm -rf "$TMP"
 
-git clone --depth=1 https://github.com/mrtronik/mrpanelv2.git "$TMP"
+git clone --depth=1 https://github.com/mrtronik/MRPanelID.git "$TMP"
 
 chmod +x "$TMP"/install/*.sh
 
