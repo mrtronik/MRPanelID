@@ -4,27 +4,27 @@
 banner "Step 8/8: Installation Complete!"
 
 # ─── Verify services ──────────────────────────
-log "Verifying services..."
+proses "Memverifikasi Layanan..."
 
 # MySQL
 if systemctl is-active --quiet mariadb; then
-    log "MariaDB: Running"
+    sukses "MariaDB: Aktif"
 else
-    warn "MariaDB: Not running"
+    error "MariaDB: Not running"
 fi
 
 # OLS
 if systemctl is-active --quiet lshttpd; then
-    log "OpenLiteSpeed: Running"
+    sukses "Webserver : Aktif"
 else
-    warn "OpenLiteSpeed: Not running"
+    error "Webserver : ga aktif"
 fi
 
 # PM2
 if pm2 list 2>/dev/null | grep -q "online"; then
-    log "MR Panel: Running"
+    sukses "MR Panel: Aktif"
 else
-    warn "MR Panel: Not running"
+    error "MR Panel: tidak aktif"
 fi
 
 # ─── Save credentials ─────────────────────────
