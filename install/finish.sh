@@ -53,7 +53,7 @@ Panel Login:
 EOF
 
 chmod 600 "$CRED_FILE"
-log "Credentials saved to $CRED_FILE"
+sukses "Credentials saved to $CRED_FILE"
 
 echo ""
 echo ""
