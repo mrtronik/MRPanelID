@@ -49,14 +49,18 @@ rm -f /usr/local/bin/composer
 sukses "Composer dihapus"
 
 
-# Bind9
-proses "Menghapus Bind9..."
+# ─── Bind9 ──────────────────────────────
+proses "Menghapus Bind9 DNS Server..."
 
+systemctl stop named >> "$LOG_FILE" 2>&1 || true
+systemctl disable named >> "$LOG_FILE" 2>&1 || true
+
+DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a \
 apt purge -y bind9 bind9-utils bind9-doc >> "$LOG_FILE" 2>&1 || true
 
 rm -rf /etc/bind
 
-sukses "Bind9 dihapus"
+sukses "Bind9 DNS Server dihapus"
 
 
 # WebServer
