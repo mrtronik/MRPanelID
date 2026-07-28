@@ -46,6 +46,11 @@ err() {
     echo "[✗] $1" >> "$LOG_FILE"
     exit 1
 }
+warn() {
+     printf  "\r\033[K${KUNING} [!]${NC} $1"
+    echo "[✗] $1" >> "$LOG_FILE"
+    exit 1
+}
 banner() {
     clear
     echo "=============================================================="
