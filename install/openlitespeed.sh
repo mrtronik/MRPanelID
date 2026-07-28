@@ -1,17 +1,22 @@
-#!/bin/bash
-# ══════════════════════════════════════════════
-#  openlitespeed.sh — Install & configure OLS
-# ══════════════════════════════════════════════
-
 banner "Langkah ke 5 dari 8: Instalasi WebServer"
+
+
 # ─── Composer ─────────────────────────────────
 if command -v composer &>/dev/null; then
     sukses "Composer sudah Aktif : $(composer --version | head -n 1)"
 else
     proses "Menginstall Composer..."
 
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php')" >> "$LOG_FILE" 2>&1
+    cd /tmp
+
+    curl -sS https://getcomposer.org/installer -o composer-setup.php >> "$LOG_FILE" 2>&1
+
+    if [ ! -f composer-setup.php ]; then
+        error "Gagal download Composer installer"
+    fi
+
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer >> "$LOG_FILE" 2>&1
+
     rm -f composer-setup.php
 
     sukses "Composer sudah Aktif : $(composer --version | head -n 1)"
@@ -24,27 +29,35 @@ if command -v named &>/dev/null; then
 else
     proses "Menginstall Bind9 DNS Server..."
 
-    apt update >> "$LOG_FILE" 2>&1
-    apt install -y bind9 bind9-utils bind9-doc >> "$LOG_FILE" 2>&1
+    apt-get update >> "$LOG_FILE" 2>&1
+    apt-get install -y bind9 bind9-utils bind9-doc >> "$LOG_FILE" 2>&1
 
     systemctl enable bind9 >> "$LOG_FILE" 2>&1
     systemctl restart bind9 >> "$LOG_FILE" 2>&1
 
     sukses "Bind9 DNS Server sudah Aktif"
 fi
-# ─── Install OLS ──────────────────────────────
+
+
+# ─── Install OpenLiteSpeed ─────────────────────
 if [ -f /usr/local/lsws/bin/lswsctrl ]; then
     sukses "WebServer sudah Aktif"
 else
     proses "Menginstall WebServer..."
-    apt-get install -y -qq openlitespeed >> "$LOG_FILE" 2>&1
+
+    apt-get update >> "$LOG_FILE" 2>&1
+    apt-get install -y openlitespeed >> "$LOG_FILE" 2>&1
+
     sukses "WebServer sudah Aktif"
 fi
 
-# ─── Start OLS ────────────────────────────────
+
+# ─── Start OpenLiteSpeed ───────────────────────
 proses "Menjalankan WebServer..."
+
 systemctl enable lshttpd >> "$LOG_FILE" 2>&1 || true
-systemctl start lshttpd >> "$LOG_FILE" 2>&1 || true
+systemctl restart lshttpd >> "$LOG_FILE" 2>&1 || true
+
 sukses "WebServer sudah Jalan"
 
 # ─── Set admin password ───────────────────────
