@@ -32,8 +32,8 @@ else
     apt-get update >> "$LOG_FILE" 2>&1
     apt-get install -y bind9 bind9-utils bind9-doc >> "$LOG_FILE" 2>&1
 
-    systemctl enable bind9 >> "$LOG_FILE" 2>&1
-    systemctl restart bind9 >> "$LOG_FILE" 2>&1
+    systemctl enable named >> "$LOG_FILE" 2>&1
+    systemctl restart named >> "$LOG_FILE" 2>&1
 
     sukses "Bind9 DNS Server sudah Aktif"
 fi
