@@ -116,10 +116,11 @@ echo ""
 while true
 do
     echo "=============================================================="
-    echo -e "  ${GREEN}1. Instalasi Baru ${NC}"
-    echo -e "  ${RED}2. Reinstal MR Panel ${NC}"
-    echo -e "  ${KUNING}3. Ngopi + Udud ☕🚬 ${NC}"
-    echo -e "  4. Gak Jadi"
+    echo -e "  ${GREEN}1. Instalasi Baru${NC}"
+    echo -e "  ${CYAN}2. Reinstal MR Panel${NC}"
+    echo -e "  ${RED}3. Hapus MR Panel (Factory Reset)${NC}"
+    echo -e "  ${KUNING}4. Ngopi + Udud ☕🚬${NC}"
+    echo -e "  5. Keluar"
     echo "=============================================================="
 
     read -rp " Pilihan Anda : " MENU
@@ -137,6 +138,38 @@ do
             ;;
 
         3)
+            clear
+            echo "=============================================================="
+            echo "                PERINGATAN !!!"
+            echo "=============================================================="
+            echo ""
+            echo "  Factory Reset akan menghapus:"
+            echo "   • MR Panel"
+            echo "   • Database MR Panel"
+            echo "   • PM2"
+            echo "   • Composer"
+            echo "   • Bind9"
+            echo "   • WebServer"
+            echo "   • PHP"
+            echo "   • MariaDB"
+            echo "   • NodeJS"
+            echo ""
+            echo "  Server akan kembali mendekati Ubuntu bersih."
+            echo ""
+            read -rp " Ketik HAPUS untuk melanjutkan: " CONFIRM
+
+            if [ "$CONFIRM" = "HAPUS" ]; then
+                INSTALL_MODE="factory-reset"
+                break
+            else
+                echo ""
+                echo "  Factory Reset dibatalkan."
+                sleep 2
+                banner "MR Panel Installer v1.0"
+            fi
+            ;;
+
+        4)
             banner "MODE NGOPI"
 
             echo ""
@@ -151,7 +184,7 @@ do
             banner "MR Panel Installer v1.0"
             ;;
 
-        4)
+        5)
             echo ""
             echo "  Sampai jumpa lagi."
             exit
@@ -161,17 +194,33 @@ do
             echo ""
             echo "  Pilihan tidak tersedia."
             sleep 1
-            banner " MR Panel Installer v1.0"
+            banner "MR Panel Installer v1.0"
             ;;
-
     esac
 done
-# ─── Run scripts ─────────────────────────────
-source "$SCRIPT_DIR/check.sh"
-source "$SCRIPT_DIR/dependency.sh"
-source "$SCRIPT_DIR/database.sh"
-source "$SCRIPT_DIR/php.sh"
-source "$SCRIPT_DIR/openlitespeed.sh"
-source "$SCRIPT_DIR/mrpanel.sh"
-source "$SCRIPT_DIR/firewall.sh"
-source "$SCRIPT_DIR/finish.sh"
+case "$INSTALL_MODE" in
+
+    install)
+        source "$SCRIPT_DIR/check.sh"
+        source "$SCRIPT_DIR/dependency.sh"
+        source "$SCRIPT_DIR/database.sh"
+        source "$SCRIPT_DIR/php.sh"
+        source "$SCRIPT_DIR/openlitespeed.sh"
+        source "$SCRIPT_DIR/mrpanel.sh"
+        source "$SCRIPT_DIR/firewall.sh"
+        source "$SCRIPT_DIR/finish.sh"
+        ;;
+
+    reinstall)
+    source "$SCRIPT_DIR/check.sh"
+    source "$SCRIPT_DIR/reinstall.sh"
+    source "$SCRIPT_DIR/database.sh"
+    source "$SCRIPT_DIR/mrpanel.sh"
+    source "$SCRIPT_DIR/firewall.sh"
+    source "$SCRIPT_DIR/finish.sh"
+    ;;
+
+    factory-reset)
+        source "$SCRIPT_DIR/uninstall.sh"
+        ;;
+esac
